@@ -1,0 +1,32 @@
+.movie_card {
+    display: flex;
+    flex-direction: column;
+}
+
+.card_poster {
+    max-width: 200px;
+    height: auto;
+    cursor: pointer;
+}
+
+.card_info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 2rem;
+    margin-top: 1rem;
+}
+
+.card_title {
+    width: 9rem;
+    cursor: pointer;
+}
+
+.card_favourite {
+    cursor: pointer;
+}
+
+.fill {
+    font-variation-settings: 'FILL' 1;
+}

@@ -1,0 +1,41 @@
+.search_filter {
+    margin-top: 1.5rem;
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search_input {
+    width: 35rem;
+    height: 2.5rem;
+    background-color: #141414;
+    border: none;
+    border-bottom: 1px solid rgb(177, 177, 177);
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+
+.search_input:focus {
+    outline: none;
+}
+
+.genre_select {
+    background-color: #141414;
+    border: none;
+    color: rgb(139, 139, 139);
+    border-bottom: 1px solid rgb(177, 177, 177);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.3rem;
+}
+
+select {
+    font-size: 1.2rem;
+}
+
+option {
+    font-size: 1rem;
+}

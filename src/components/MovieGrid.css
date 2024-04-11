@@ -1,0 +1,10 @@
+.movie_grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+    /* justify-content: space-between; */
+    margin-bottom: 3.5rem;
+}
