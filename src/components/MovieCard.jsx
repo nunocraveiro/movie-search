@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import './MovieCard.css'
 
 function MovieCard({movie, favourites, setFavourites}) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleFavourite = (e) => {
     if (e.target.classList.contains('fill')) {

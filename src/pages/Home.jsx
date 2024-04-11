@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { apiGet } from '../helpers'
 import Header from '../components/Header'
 import SearchFilter from '../components/SearchFilter'
 import MovieGrid from '../components/MovieGrid'
+import Loader from '../components/Loader'
 import './Home.css'
 
 function Home() {
-  const [backgroundUrl, setBackgroundUrl] = useState('')
+  const [trendingMovie, setTrendingMovie] = useState(null)
   const [genres, setGenres] = useState([])
   const [movies, setMovies] = useState([])
   const [nowPlayingMovies, setNowPlayingMovies] = useState([])
@@ -15,11 +17,14 @@ function Home() {
   const [filteredMovies, setFilteredMovies] = useState([])
   const [activeFavourites, setActiveFavourites] = useState(false)
   const [loadingSearch, setLoadingSearch] = useState(false)
+  const [noResults, setNoResults] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
       const fetchTrendingMovie = async() => {
-          const data = await apiGet('trending')
-          setBackgroundUrl(`https://image.tmdb.org/t/p/original${data.results[0].backdrop_path}`)
+        const data = await apiGet('trending')
+        console.log(data.results);
+        setTrendingMovie(data.results[0])
       }
       const fetchGenres = async() => {
         const data = await apiGet('genres')
@@ -50,31 +55,49 @@ function Home() {
     return setMovies(favouriteMovies)
   }
 
+  const trendingNavigate = () => {
+    navigate(`/${trendingMovie.id}`)
+  }
+
   return (
     <div>
       <div className='background_overlay'></div>
-      <img className='header_background' src={backgroundUrl} alt="background" />
+      {!trendingMovie && <Loader />}
+      {trendingMovie && <img className='header_background' src={`https://image.tmdb.org/t/p/original${trendingMovie.backdrop_path}`} alt="background" />}
       <Header />
-      <div className='trending'></div>
+      {trendingMovie && <div className='trending'>
+        <p>Movie of the Week:</p>
+        <h2 onClick={trendingNavigate}>{trendingMovie.title}</h2>
+      </div>}
       <SearchFilter
         genres={genres} 
         nowPlaying={nowPlayingMovies} 
         setMovies={setMovies} 
         setFiltered={setFilteredMovies} 
         setActiveFavourites={setActiveFavourites} 
-        setLoadingSearch={setLoadingSearch} 
+        setLoadingSearch={setLoadingSearch}
+        setNoResults={setNoResults}
       />
       <div className='view_selector'>
-        <p className='now_playing' onClick={nowPlayingClick}>Now Playing</p>
-        <p className='favourites' onClick={favouritesClick}>Favourites</p>
+        <p className={activeFavourites ? 'not_selected' : 'selected'} onClick={nowPlayingClick}>Now Playing</p>
+        <p className={activeFavourites ? 'selected' : 'not_selected'} onClick={favouritesClick}>Favourites</p>
       </div>
-      <MovieGrid 
-        movies={movies} 
-        favourites={favouriteMovies} 
-        setFavourites={setFavouriteMovies} 
-        loadingSearch={loadingSearch} 
-        setLoadingSearch={setLoadingSearch} 
-      />
+      {movies.length === 0 && activeFavourites && 
+        <div className='not_found'>
+          You have no favourite movies yet
+        </div>
+      }
+      {movies.length === 0 && !activeFavourites ? 
+        <div className='not_found'>
+          Oops! Movie not found...
+        </div> :
+        <MovieGrid 
+          movies={movies} 
+          favourites={favouriteMovies} 
+          setFavourites={setFavouriteMovies} 
+          loadingSearch={loadingSearch} 
+          setLoadingSearch={setLoadingSearch} 
+        />}
     </div>
   )
 }

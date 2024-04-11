@@ -2,7 +2,7 @@ import { apiGet } from '../helpers'
 import { useRef } from 'react'
 import './SearchFilter.css'
 
-function searchFilter({genres, nowPlaying, setMovies, setFiltered, setActiveFavourites, setLoadingSearch}) {
+function searchFilter({genres, nowPlaying, setMovies, setFiltered, setActiveFavourites, setLoadingSearch, setNoResults}) {
     const searchRef = useRef(null)
 
     const searchSubmit = async (e) => {
@@ -10,6 +10,9 @@ function searchFilter({genres, nowPlaying, setMovies, setFiltered, setActiveFavo
             setActiveFavourites(false)
             setLoadingSearch(true)
             const data = await apiGet('search', e.target.value)
+            if (data.results.length === 0) {
+                searchRef.current.value = ''
+            }
             setFiltered(data.results)
             return setMovies(data.results)
         }

@@ -1,6 +1,7 @@
 export const apiGet = async (request, query = '') => {
     const key = import.meta.env.VITE_API_AUTH
     let url = ''
+
     switch (request) {
         case 'trending':
           url = 'https://api.themoviedb.org/3/trending/movie/week?language=en'
@@ -38,4 +39,11 @@ export const apiGet = async (request, query = '') => {
     const data = await response.json()
     return data;
 }
-  
+
+export const timeConvert = (n) => {
+    const hours = (n / 60)
+    const rhours = Math.floor(hours)
+    const minutes = (hours - rhours) * 60
+    const rminutes = Math.round(minutes)
+    return `${rhours}h ${rminutes}min`
+}
